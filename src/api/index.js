@@ -1,5 +1,6 @@
 import Vue from 'vue'
 const auth = process.env.VUE_APP_AUTH
+const basurl = process.env.VUE_APP_API_URL
 export function httpFunc (url, params, type = 'post') {
   let method = {
     'get': Vue.axios.get(url, { params }),

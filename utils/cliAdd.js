@@ -62,15 +62,24 @@ import Router from 'vue-router'
 import ${arr[1]} from './${arr[1]}.vue'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
       name: '${arr[1]}',
+      meta: {
+        title: '${keyword}'
+      },
       component: ${arr[1]}
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const { title } = to.meta
+  title && (document.title = title)
+  next()
+})
+export default router
 `
   fs.writeFileSync(path, data)
   console.log('创建router.js成功！')

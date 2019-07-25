@@ -1,3 +1,3 @@
 module.exports = {
-  productName: 'qixin_xinai'
+  productName: 'huagui_damai'
 }

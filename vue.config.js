@@ -16,17 +16,13 @@ module.exports = {
   outputDir: outputDir,
   pages: page,
   lintOnSave: 'error',
+
   // 如果您不需要生产时的源映射，那么将此设置为false可以加速生产构建
   productionSourceMap: false,
-  filenameHashing: false, // 如果你无法使用 Vue CLI 生成的 index HTML，你可以通过将这个选项设为 false 来关闭文件名哈希
-  devServer: {
-    open: false,
-    host: 'localhost',
-    port: 8081,
-    https: false,
-    hotOnly: false,
-    proxy: ''
-  }
+
+  // 如果你无法使用 Vue CLI 生成的 index HTML，你可以通过将这个选项设为 false 来关闭文件名哈希
+  filenameHashing: false,
+
   // configureWebpack: {
   //   resolve: {
   //     alias: {
@@ -40,5 +36,31 @@ module.exports = {
   //       'utils': '@/utils'
   //     }
   //   }
-  // }
+  // },
+  devServer: {
+    open: true,
+    host: 'localhost',
+    port: 8081,
+    https: false,
+    hotOnly: false,
+    proxy: ''
+  },
+
+  css: {
+    loaderOptions: {
+      stylus: {
+        'resolve url': true,
+        'import': [
+          './src/theme'
+        ]
+      }
+    }
+  },
+
+  pluginOptions: {
+    'cube-ui': {
+      postCompile: true,
+      theme: true
+    }
+  }
 }

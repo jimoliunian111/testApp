@@ -1,9 +1,9 @@
 <template>
-  <div>大麦页面</div>
+  <div>huagui_damai</div>
 </template>
 <script>
 export default {
-  name: 'damai'
+  name: 'huagui_damai'
 }
 </script>
 <style>

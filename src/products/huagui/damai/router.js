@@ -1,14 +1,23 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Damai from './damai.vue'
+import damai from './damai.vue'
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   routes: [
     {
       path: '/',
-      name: 'huagui_damai',
-      component: Damai
+      name: 'damai',
+      meta: {
+        title: 'huagui_damai'
+      },
+      component: damai
     }
   ]
 })
+router.beforeEach((to, from, next) => {
+  const { title } = to.meta
+  title && (document.title = title)
+  next()
+})
+export default router
