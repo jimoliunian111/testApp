@@ -4,12 +4,12 @@ import Vue from 'vue'
 import axios from 'axios'
 
 // Full config:  https://github.com/axios/axios#request-config
-axios.defaults.baseURL = process.env.VUE_APP_DOMAIN || process.env.VUE_APP_DOMAIN || ''
+axios.defaults.baseURL = process.env.VUE_APP_API_URL
 // axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
 
 let config = {
-  baseURL: process.env.VUE_APP_DOMAIN || process.env.VUE_APP_DOMAIN || ''
+  baseURL: process.env.VUE_APP_API_URL
   // timeout: 60 * 1000, // Timeout
   // withCredentials: true, // Check cross-site Access-Control
 }
@@ -22,7 +22,7 @@ _axios.interceptors.request.use(
     // return config
     // Do something before request is sent
     if (config.url.indexOf('//') < 0) {
-      config.url = process.env.VUE_APP_DOMAIN + config.url
+      config.url = process.env.VUE_APP_API_URL + config.url
     }
     let reqData = config.data
     //  let ua = store.getter.getUA

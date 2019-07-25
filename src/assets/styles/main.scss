@@ -1,3 +1,8 @@
 @function rem ($px) {
-  @return $px / 12 * 1rem
+  @return ($px/2) / 12 * 1rem
 }
+
+$color-primary: #ff9900;
+$color-word: #332500;
+$color-sub: #999999;
+$color-border: #efefef;

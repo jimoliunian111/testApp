@@ -1,12 +1,16 @@
 import Vue from 'vue'
 const auth = process.env.VUE_APP_AUTH
-const basurl = process.env.VUE_APP_API_URL
-export function httpFunc (url, params, type = 'post') {
-  let method = {
-    'get': Vue.axios.get(url, { params }),
-    'post': Vue.axios.post(url, params)
+// const basurl = process.env.VUE_APP_API_URL
+export function httpType (url, params, type = 'post') {
+  if (type.toLowerCase() === 'post') {
+    return Vue.axios.post(url, params)
+  } else {
+    return Vue.axios.get(url, { params })
   }
-  return method[type.toLowerCase()].then(res => {
+}
+
+export function httpFunc (url, params, type = 'post') {
+  return httpType(url, params, type).then(res => {
     console.log('请求返回信息', res)
     if (typeof res.data === 'object' && res.data.code === 0) {
       return Promise.resolve(res.data)
