@@ -1,1 +1,49 @@
-{"name":"testapp","version":"0.1.0","private":true,"scripts":{"serve":"vue-cli-service serve --mode development","build":"vue-cli-service build","lint":"vue-cli-service lint","add":"node utils/cliAdd","build:all":"npm run build:huagui_damai","build:huagui_damai":"vue-cli-service build huagui_damai --mode product","build:huagui_xiaomai":"vue-cli-service build huagui_xiaomai --mode product","build:qixin_xinai":"vue-cli-service build qixin_xinai --mode product","delete":"node utils/cliDelete","dev":"vue-cli-service serve --mode development","esFix":"eslint --fix src","go":"node utils/cliRun","initPackage":"node utils/initPackage"},"dependencies":{"amfe-flexible":"^2.2.1","core-js":"^2.6.5","cube-ui":"~1.12.15","eslint-plugin-vuefix":"^0.2.1","shelljs":"^0.8.3","vant":"^1.6.18","vue":"^2.6.10","vue-router":"^3.0.3","vuex":"^3.0.1"},"devDependencies":{"@vue/cli-plugin-babel":"^3.7.0","@vue/cli-plugin-eslint":"^3.7.0","@vue/cli-service":"^3.7.0","@vue/eslint-config-standard":"^4.0.0","axios":"^0.18.0","babel-eslint":"^10.0.1","babel-plugin-import":"^1.11.0","eslint":"^5.16.0","eslint-plugin-vue":"^5.0.0","node-sass":"^4.9.0","postcss-px2rem":"^0.3.0","sass-loader":"^7.1.0","stylus":"^0.54.5","stylus-loader":"^3.0.2","vue-cli-plugin-axios":"0.0.4","vue-cli-plugin-cube-ui":"^0.2.5","vue-template-compiler":"^2.5.21"},"transformModules":{"cube-ui":{"transform":"cube-ui/src/modules/${member}","kebabCase":true}}}
+{
+  "name": "testapp",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --mode development",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint",
+    "add": "node utils/cliAdd",
+    "build:all": "npm run build:huagui_damai",
+    "build:huagui_damai": "vue-cli-service build huagui_damai --mode product",
+    "build:huagui_xiaomai": "vue-cli-service build huagui_xiaomai --mode product",
+    "build:qixin_xinai": "vue-cli-service build qixin_xinai --mode product",
+    "delete": "node utils/cliDelete",
+    "dev": "vue-cli-service serve --mode development",
+    "esFix": "eslint --fix src",
+    "go": "node utils/cliRun",
+    "initPackage": "node utils/initPackage"
+  },
+  "dependencies": {
+    "core-js": "^2.6.5",
+    "eslint-plugin-vuefix": "^0.2.1",
+    "shelljs": "^0.8.3",
+    "vant": "^2.0.5",
+    "vue": "^2.6.10",
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "@vue/eslint-config-standard": "^4.0.0",
+    "axios": "^0.18.0",
+    "babel-eslint": "^10.0.1",
+    "babel-plugin-import": "^1.12.0",
+    "eslint": "^5.16.0",
+    "eslint-plugin-vue": "^5.0.0",
+    "node-sass": "^4.9.0",
+    "postcss-px2rem": "^0.3.0",
+    "sass-loader": "^7.1.0",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "vant": "^1.6.24",
+    "vue-cli-plugin-axios": "0.0.4",
+    "vue-cli-plugin-vant": "^1.0.1",
+    "vue-template-compiler": "^2.5.21"
+  }
+}
