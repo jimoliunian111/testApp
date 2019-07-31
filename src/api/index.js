@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import { Toast } from 'vant'
 const auth = process.env.VUE_APP_AUTH
 // const basurl = process.env.VUE_APP_API_URL
 export function httpType (url, params, type = 'post') {
@@ -9,22 +10,40 @@ export function httpType (url, params, type = 'post') {
   }
 }
 
-export function httpFunc (url, params, type = 'post') {
+export function httpFunc (url, params, type = 'post', toast) {
   return httpType(url, params, type).then(res => {
     console.log('请求返回信息', res)
     if (typeof res.data === 'object' && res.data.code === 0) {
       return Promise.resolve(res.data)
     } else {
+      if (!toast) {
+        Toast(res.data.data[Object.keys(res.data.data)[0]][0] || res.data.message || '系统错误')
+      }
       return Promise.reject(res)
     }
   }).catch(err => {
+    if (!toast) {
+      Toast(err.data.data[Object.keys(err.data.data)[0]][0] || err.data.message || '系统错误')
+    }
     return Promise.reject(err)
   })
 }
 
-export function getConfigure (params) {
-  return httpFunc(`/api/v1/product/configure${auth}`, params, 'get')
+export function getConfigure (params, toast) {
+  return httpFunc(`/api/v1/product/configure${auth}`, params, 'get', toast)
 }
-export function getAppDetail (params) {
-  return httpFunc(`/api/v1/product/distribution/detail${auth}`, params, 'get')
+export function getDetail (params, toast) {
+  return httpFunc(`/api/v1/product/distribution/detail${auth}`, params, 'get', toast)
+}
+// 计算保费 /api/v1/product/premium/calculate${auth}
+export function getCalculate (params, toast) {
+  return httpFunc(`/api/v1/product/premium/calculate${auth}`, params, 'post', toast)
+}
+// 属性监听 /api/v1/product/attributes${auth}
+export function getAttr (params, toast) {
+  return httpFunc(`/api/v1/product/attributes${auth}`, params, 'post', toast)
+}
+// app分享  forwardAgent: `/api/v1/product/distribution/detail/forward/agent${auth}`,
+export function fetchAgent (params, toast) {
+  return httpFunc(`/api/v1/product/distribution/detail/forward/agent${auth}`, params, 'post', toast)
 }

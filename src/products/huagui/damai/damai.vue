@@ -12,87 +12,73 @@
       <div class="product-info-form-item-title">承包年龄</div>
       <div class="product-info-form-item-content">18-60周岁</div>
     </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">被保人出生日期</div>
-      <div class="product-info-form-item-content">
-        <div>2019-01-01</div>
-        <div>图标</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">被保人性别</div>
-      <div class="product-info-form-item-content">
-        <div>男</div>
-        <div>女</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">职业类型</div>
-      <div class="product-info-form-item-content">
-        <div>帅气少年</div>
-        <div>请选择</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">投保区域</div>
-      <div class="product-info-form-item-content">
-        <div>广东省-广州市-海珠区</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">有无社保</div>
-      <div class="product-info-form-item-content">
-        <div>有</div>
-        <div>无</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">保障期限</div>
-      <div class="product-info-form-item-content">
-        <div>请选择</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">保障额度</div>
-      <div class="product-info-form-item-content">
-        <div>请选择</div>
-      </div>
-    </div>
-    <div class="product-info-form-item">
-      <div class="product-info-form-item-title">缴费期限</div>
-      <div class="product-info-form-item-content">
-        <div>请选择</div>
-      </div>
-    </div>
+    <template v-if="initData.insured_birthday">
+      <datetime-module title="被保人出生日期" :dateData="initData.insured_birthday"
+      @getData="getDateTime" keyStr="insured_birthday"></datetime-module>
+    </template>
+    <template v-if="initData.insured_gender">
+      <select-module title="被保人性别" :list="initData.insured_gender.items" :active="initData.insured_gender.default"
+      keyStr="insured_gender" @getData="getSelectData" type="check"></select-module>
+    </template>
+    <template v-if="initData.guarantee_period">
+      <select-module title="职业类型" :list="initData.guarantee_period.items" :active="initData.guarantee_period.default"></select-module>
+    </template>
+    <template v-if="initData.guarantee_period">
+      <city-module title="投保区域" @getData="getCityData"></city-module>
+    </template>
+    <template v-if="initData.social_security">
+      <select-module title="有无社保" :list="initData.social_security.items" :active="initData.social_security.default"
+      keyStr="social_security" @getData="getSelectData" type="check"></select-module>
+    </template>
+    <template v-if="initData.guarantee_period">
+      <select-module title="保障期限" :list="initData.guarantee_period.items" :active="initData.guarantee_period.default"
+      keyStr="guarantee_period" @getData="getSelectData"></select-module>
+    </template>
+    <template v-if="initData.guarantee_quota">
+      <select-module title="保障额度" :list="initData.guarantee_quota.items" :active="initData.guarantee_quota.default"
+      keyStr="guarantee_quota" @getData="getSelectData"></select-module>
+    </template>
+    <template v-if="initData.payment_period">
+      <select-module title="缴费期限" :list="initData.payment_period.items" :active="initData.payment_period.default.value"
+      keyStr="payment_period" @getData="getSelectData"></select-module>
+    </template>
+
     <div class="product-info-form-item">
       <div class="product-info-form-item-title">年收入</div>
-      <div class="product-info-form-item-content">
-        <div>10万</div>
+      <div class="product-info-form-item-content"><div>10万</div></div>
+    </div>
+
+    <div class="module-margin-top">
+      <div class="common-title">
+        <i class="icon iconfont">&#xe610;</i> 理赔服务
       </div>
     </div>
 
-    <div class="product-detail">
-      <div class="main-tabs" ref="mainTabs" id="mainTabs">
-        <div class="tab-item" :class="{'tab-active': tabActive === item.name}" @click="tabClick(item.name)" v-for="(item, idx) in tabsList" :key="idx">
-          <span>{{item.title}}</span>
-        </div>
-      </div>
+    <product-introduction :confs="tabsList" :detail="detailData"></product-introduction>
 
-      <div class="tab-content-style" id="features" ref="features">产品特色</div>
-      <div class="tab-content-style" id="attentions" ref="attentions">投保须知</div>
-      <div class="tab-content-style" id="clause" ref="clause">产品条款</div>
-      <div class="tab-content-style" id="claims" ref="claims">理赔服务</div>
-    </div>
+    <footer-tool-module :money="money" @share="shareFunc"></footer-tool-module>
+
+    <share></share>
   </div>
 </template>
 
 <script>
-import { getAppDetail } from '@/api'
+import { getDetail, getCalculate, getAttr, fetchAgent } from '@/api'
+import { Popup, Picker } from 'vant';
+import productIntroduction from '@/components/ver1.0.0/product-introduction.vue'
+import selectModule from '@/components/ver1.0.0/select-module.vue'
+import cityModule from '@/components/ver1.0.0/city-module.vue'
+import datetimeModule from '@/components/ver1.0.0/datetime-module.vue'
+import footerToolModule from '@/components/ver1.0.0/footer-tool-module.vue'
+
 export default {
   name: 'huagui_damai',
   data () {
     return {
       detailData: {},
+      product_id: '',
+      channel_product_id: '',
+      money: '',
       tabsList: [
         {title: '产品特色', name: 'features'},
         {title: '投保须知', name: 'attentions'},
@@ -101,50 +87,112 @@ export default {
         // {title: '投保案例', name: 'example'},
         // {title: '用户评论', name: 'comment'},
       ],
-      tabActive: 'features'
+      tabActive: 'features',
+      formValue: {},
+      initData: {}
     }
   },
+  provide () {
+    return {
+      sourceData: this.getDetailData
+    }
+  },
+  components: {
+    productIntroduction,
+    [Popup.name]: Popup,
+    [Picker.name]: Picker,
+    selectModule,
+    cityModule,
+    datetimeModule,
+    footerToolModule
+  },
   created () {
+    localStorage.setItem('userToken', 'b22a2adf48587076e96941a4ecfde64f')
     this.getData()
   },
   mounted() {
-    this.bindScrollEvent()
   },
   methods: {
+    getDetailData () {
+      return this.detailData
+    },
     getData () {
       let params = {
         id: 20
       }
-      getAppDetail(params).then(res => {
+      getDetail(params).then(res => {
+        this.datttt = '2'
         console.log('详情数据请求成功', res)
         this.detailData = res.data
+        this.product_id = res.data.id
+        this.channel_product_id = res.data.channel_product_id
+        this.initData = this.detailData.attributes
+        this.setFormValue(this.initData)
       })
     },
-    bindScrollEvent() {
-      window.addEventListener('scroll', this.scrollHandler);
+    setFormValue (data) { // 设置formvalue， 产品参数，保费计算，属性监听都是
+      this.formValue = {
+        annual_income: data.annual_income.default,
+        applicant_birthday: data.applicant_birthday.default,
+        applicant_gender: data.applicant_gender.default,
+        insured_personal_address_area: '',
+        insured_personal_address_city: '',
+        insured_personal_address_province: '',
+        insured_birthday: data.insured_birthday.default,
+        insured_gender: data.insured_gender.default,
+        guarantee_quota: data.guarantee_quota.default,
+        guarantee_period: data.guarantee_period.default,
+        payment_period_unit: data.payment_period.default.unit,
+        payment_period_value: data.payment_period.default.value,
+        payment_period: data.payment_period.default.value,
+        product_id: this.product_id,
+        social_security: data.social_security.default
+      }
+      this.calculate()
     },
-    unBindScrollEvent() {
-      window.removeEventListener('scroll', this.scrollHandler);
-    },
-    scrollHandler () {
-      let contents = document.querySelectorAll(".tab-content-style")
-      let windowScrollTop = document.documentElement.scrollTop || document.body.scrollTop
-      let tabHeight = this.$refs.mainTabs.getBoundingClientRect().height
-      contents.forEach(item => {
-        if (windowScrollTop + tabHeight > item.offsetTop) {
-          this.tabActive = item.id
-        }
-      });
-    },
-    tabClick (type) {
-      console.log('aaaaa', this.$refs[type].offsetTop, )
-      let tabHeight = this.$refs.mainTabs.getBoundingClientRect().height
-      let blockTop = this.$refs[type].offsetTop
-      let disparity = 0
-      this.$nextTick(function () {
-        document.documentElement.scrollTop = blockTop - tabHeight
+    calculate () { // 算保费
+      let params = this.formValue
+      getCalculate(params).then(res => {
+        console.log('计算保费成功', res)
+        this.money = res.data.amount
+      }).catch(res => {
+        console.log('计算保费失败', res)
       })
-      this.tabActive = type
+    },
+    changeAttr () { // 监听属性
+      let params = this.formValue
+      getAttr(params).then(res => {
+        this.initData = res.data
+        this.setFormValue(this.initData)
+      }).catch(res => {
+        console.log('属性监听失败', res)
+      })
+    },
+    getSelectData (data, key) { // 获取组件数据， 根据返回的key赋值相应的参数并更新保费
+      console.log('sssss', data, key)
+      this.formValue[key] = data.value
+      this.changeAttr()
+    },
+    getDateTime (data, key) {
+      this.formValue[key] = data
+      this.changeAttr()
+    },
+    getCityData (data, str) {
+      console.log('777777777', data, str)
+    },
+    shareFunc () {
+      let params = {
+        channel_product_id: this.channel_product_id,
+        product_id: this.product_id,
+        target: 1,
+        data: JSON.stringify(this.formValue)
+      }
+      this.$root.$emit('share', params)
+      // fetchAgent(params).then(res => {
+      //   console.log('分享成功', res)
+      // }).catch(res => {
+      //   console.log('分享失败', res)
+      // })
     }
   }
 }
@@ -155,89 +203,6 @@ export default {
   width: 100%;
   background: #f5f5f5;
 }
-.banner-style {
-  width: 100%;
-}
-.banner-style img {
-  width: 100%;
-}
-.product-info {
-  width: 100%;
-  padding: rem(20) rem(28);
-  box-sizing: border-box;
-  background: #fff;
-  .main-title {
-    text-align: left;
-    font-size: rem(44);
-    color: $color-word;
-  }
-  .sub-title {
-    width: 100%;
-    margin-top: rem(15);
-    text-align: left;
-    font-size: rem(28);
-    color: $color-sub;
-  }
-}
-.product-info-form-item {
-  position: relative;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-  align-content: center;
-  align-items: center;
-  width: 100%;
-  padding: rem(26) rem(28);
-  box-sizing: border-box;
-  font-size: rem(28);
-  background: #fff;
-}
-.product-info-form-item::before {
-  content: '';
-  position: absolute;
-  left: rem(28);
-  top: 0;
-  width: rem(694);
-  height: 0;
-  border-top: rem(1) solid $color-border;
-}
-.product-info-form-item-title {
-  max-width: rem(200);
-}
-.product-info-form-item-content {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: flex-end;
-  align-content: center;
-  align-items: center;
-}
-.product-detail {
-  width: 100%;
-  margin-top: rem(10);
-}
-.main-tabs {
-  position: sticky;
-  left: 0;
-  top: 0;
-  min-width: 100%;
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  align-content: center;
-  align-items: center;
-  background: #fff;
-}
-.tab-item {
-  flex: 1;
-  line-height: rem(70);
-  font-size: rem(24);
-}
-.tab-active {
-  color: $color-primary;
-  border-bottom: rem(1) solid $color-primary;
-}
-.tab-content-style {
-  width: 100%;
-  height: rem(500);
-}
+
+
 </style>

@@ -1,0 +1,132 @@
+@import '@/assets/styles/main.scss';
+.banner-style {
+  width: 100%;
+}
+.banner-style img {
+  width: 100%;
+}
+.product-info {
+  width: 100%;
+  padding: rem(20) rem(28);
+  box-sizing: border-box;
+  background: #fff;
+  .main-title {
+    text-align: left;
+    font-size: rem(44);
+    color: $color-word;
+  }
+  .sub-title {
+    width: 100%;
+    margin-top: rem(15);
+    text-align: left;
+    font-size: rem(28);
+    color: $color-sub;
+  }
+}
+.product-info-form-item {
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  padding: rem(26) rem(28);
+  box-sizing: border-box;
+  font-size: rem(28);
+  background: #fff;
+}
+.product-info-form-item::before {
+  content: '';
+  position: absolute;
+  left: rem(28);
+  top: 0;
+  width: rem(694);
+  height: 0;
+  border-top: 1px solid $color-border;
+}
+.product-info-form-item-title {
+  max-width: rem(200);
+}
+.product-info-form-item-content {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-end;
+  align-content: center;
+  align-items: center;
+  max-width: rem(550);
+  .icon-style {
+    width: rem(60);
+    i {
+      font-size: rem(28);
+      color: $color-primary;
+    }
+  }
+  .value-style {
+
+  }
+  .select-value-style {
+    padding: rem(10) rem(15);
+    box-sizing: border-box;
+    border: 1px solid $color-border;
+    border-radius: rem(5);
+  }
+  .radio-box-style {
+    display: flex;
+    overflow: row nowrap;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    width: rem(160);
+    .radio-style {
+      padding: rem(15) rem(15);
+      box-sizing: border-box;
+      border: 1px solid $color-border;
+    }
+    .radio-active {
+      color: $color-primary;
+      border: 1px solid $color-primary;
+    }
+  }
+
+}
+.select-style {
+  width: 100%;
+  height: rem(860);
+  background: $color-background;
+}
+
+.common-title {
+  // height: rem(150);
+  position: relative;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  height: rem(100);
+  font-size: rem(32);
+  color: $color-sub;
+  padding: rem(20) rem(27);
+  box-sizing: border-box;
+  overflow: hidden;
+  font-family: PingFangSC-Regular,sans-serif;
+  text-align: left;
+  background: $color-background;
+  i {
+    font-size: rem(32);
+  }
+}
+.common-title::before {
+  position: absolute;
+  left: rem(28);
+  bottom: 0;
+  content: '';
+  width: rem(694);
+  height: 0;
+  border-bottom: 1px solid $color-border;
+}
+.module-margin-top {
+  margin-top: rem(20);
+}

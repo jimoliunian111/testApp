@@ -22,21 +22,6 @@ module.exports = {
 
   // 如果你无法使用 Vue CLI 生成的 index HTML，你可以通过将这个选项设为 false 来关闭文件名哈希
   filenameHashing: false,
-
-  // configureWebpack: {
-  //   resolve: {
-  //     alias: {
-  //       'assets': '@/assets',
-  //       'components': '@/components',
-  //       'views': '@/views',
-  //       'products': '@/products',
-  //       'api': '@/api',
-  //       'plugins': '@/plugins',
-  //       'router': '@/router',
-  //       'utils': '@/utils'
-  //     }
-  //   }
-  // },
   devServer: {
     open: true,
     host: '0.0.0.0',
@@ -53,14 +38,14 @@ module.exports = {
         'import': [
           './src/theme'
         ]
+      },
+      postcss: {
+        plugins: [
+          require('postcss-px2rem')({
+            remUnit: 12
+          })
+        ]
       }
-    }
-  },
-
-  pluginOptions: {
-    'cube-ui': {
-      postCompile: true,
-      theme: true
     }
   }
 }
