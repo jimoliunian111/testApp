@@ -55,6 +55,10 @@
   align-content: center;
   align-items: center;
   max-width: rem(550);
+  min-width: rem(120);
+  .form-item-content {
+    text-align: right;
+  }
   .icon-style {
     width: rem(60);
     i {

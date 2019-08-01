@@ -1,5 +1,5 @@
 <template>
-  <div class="share-style">
+  <div class="share-style" v-if="show">
     <van-popup v-model="show" class="share-box-style" position="bottom">
       <div class="share-style">
         <div class="share-way-item" v-for="(item, idx) in shareWays" :key="idx" @click="share(item.target)">
@@ -9,7 +9,7 @@
           <div class="text-style">{{item.title}}</div>
         </div>
       </div>
-      <div class="share-cansel-style">
+      <div class="share-cansel-style" @click="show = false">
         <van-button plain hairline size="large">取消</van-button>
       </div>
     </van-popup>

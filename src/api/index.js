@@ -47,3 +47,7 @@ export function getAttr (params, toast) {
 export function fetchAgent (params, toast) {
   return httpFunc(`/api/v1/product/distribution/detail/forward/agent${auth}`, params, 'post', toast)
 }
+// app职业/api/v1/product/profession/list${auth}
+export function getProfression (params, toast) {
+  return httpFunc(`/api/v1/product/profession/list${auth}`, params, 'get', toast)
+}

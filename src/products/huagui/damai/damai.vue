@@ -21,7 +21,7 @@
       keyStr="insured_gender" @getData="getSelectData" type="check"></select-module>
     </template>
     <template v-if="initData.guarantee_period">
-      <select-module title="职业类型" :list="initData.guarantee_period.items" :active="initData.guarantee_period.default"></select-module>
+      <profression-module title="职业类型" :list="initData.guarantee_period.items" :active="initData.guarantee_period.default"></profression-module>
     </template>
     <template v-if="initData.guarantee_period">
       <city-module title="投保区域" @getData="getCityData"></city-module>
@@ -52,6 +52,15 @@
       <div class="common-title">
         <i class="icon iconfont">&#xe610;</i> 理赔服务
       </div>
+
+      <div class="box-ceontent-style">
+        <van-collapse v-model="activeNames" accordion>
+          <van-collapse-item :title="item.itemTitle" :name="idx" v-for="(item, idx) in accordionData" :key="idx">
+            <div slot="value">{{item.itemVal}}</div>
+            <div slot="default">{{item.itemDesc}}</div>
+          </van-collapse-item>
+        </van-collapse>
+      </div>
     </div>
 
     <product-introduction :confs="tabsList" :detail="detailData"></product-introduction>
@@ -64,12 +73,13 @@
 
 <script>
 import { getDetail, getCalculate, getAttr, fetchAgent } from '@/api'
-import { Popup, Picker } from 'vant';
+import { Popup, Picker, Collapse, CollapseItem } from 'vant';
 import productIntroduction from '@/components/ver1.0.0/product-introduction.vue'
 import selectModule from '@/components/ver1.0.0/select-module.vue'
 import cityModule from '@/components/ver1.0.0/city-module.vue'
 import datetimeModule from '@/components/ver1.0.0/datetime-module.vue'
 import footerToolModule from '@/components/ver1.0.0/footer-tool-module.vue'
+import profressionModule from '@/components/ver1.0.0/profression-module.vue'
 
 export default {
   name: 'huagui_damai',
@@ -89,7 +99,9 @@ export default {
       ],
       tabActive: 'features',
       formValue: {},
-      initData: {}
+      initData: {},
+      accordionData: require('./datas/accordData.js'),
+      activeNames: null
     }
   },
   provide () {
@@ -101,10 +113,13 @@ export default {
     productIntroduction,
     [Popup.name]: Popup,
     [Picker.name]: Picker,
+    [Collapse.name]: Collapse,
+    [CollapseItem.name]: CollapseItem,
     selectModule,
     cityModule,
     datetimeModule,
-    footerToolModule
+    footerToolModule,
+    profressionModule
   },
   created () {
     localStorage.setItem('userToken', 'b22a2adf48587076e96941a4ecfde64f')
@@ -135,9 +150,9 @@ export default {
         annual_income: data.annual_income.default,
         applicant_birthday: data.applicant_birthday.default,
         applicant_gender: data.applicant_gender.default,
-        insured_personal_address_area: '',
-        insured_personal_address_city: '',
-        insured_personal_address_province: '',
+        insured_personal_address_area: data.insured_personal_address_area.default.id,
+        insured_personal_address_city: data.insured_personal_address_city.default.id,
+        insured_personal_address_province: data.insured_personal_address_province.default.id,
         insured_birthday: data.insured_birthday.default,
         insured_gender: data.insured_gender.default,
         guarantee_quota: data.guarantee_quota.default,
@@ -178,7 +193,10 @@ export default {
       this.changeAttr()
     },
     getCityData (data, str) {
-      console.log('777777777', data, str)
+      this.formValue.insured_personal_address_area = data[2].code
+      this.formValue.insured_personal_address_city = data[1].code
+      this.formValue.insured_personal_address_province = data[0].code
+      this.changeAttr()
     },
     shareFunc () {
       let params = {
@@ -188,11 +206,6 @@ export default {
         data: JSON.stringify(this.formValue)
       }
       this.$root.$emit('share', params)
-      // fetchAgent(params).then(res => {
-      //   console.log('分享成功', res)
-      // }).catch(res => {
-      //   console.log('分享失败', res)
-      // })
     }
   }
 }
@@ -203,6 +216,9 @@ export default {
   width: 100%;
   background: #f5f5f5;
 }
-
+.box-ceontent-style {
+  width: 100%;
+  text-align: left;
+}
 
 </style>
