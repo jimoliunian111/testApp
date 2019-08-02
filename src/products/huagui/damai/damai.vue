@@ -21,7 +21,8 @@
       keyStr="insured_gender" @getData="getSelectData" type="check"></select-module>
     </template>
     <template v-if="initData.guarantee_period">
-      <profression-module title="职业类型" :list="initData.guarantee_period.items" :active="initData.guarantee_period.default"></profression-module>
+      <profression-module title="职业类型" :defaultName="formValue.insured_profession_name"
+      keyStr="insured_profession_name" @getData="getProfression"></profression-module>
     </template>
     <template v-if="initData.guarantee_period">
       <city-module title="投保区域" @getData="getCityData"></city-module>
@@ -72,8 +73,8 @@
 </template>
 
 <script>
-import { getDetail, getCalculate, getAttr, fetchAgent } from '@/api'
-import { Popup, Picker, Collapse, CollapseItem } from 'vant';
+import { getDetail, getCalculate, getAttr, fetchAgent, wapGetDetail, wapGetAttr } from '@/api'
+import { Popup, Picker, Collapse, CollapseItem } from 'vant'
 import productIntroduction from '@/components/ver1.0.0/product-introduction.vue'
 import selectModule from '@/components/ver1.0.0/select-module.vue'
 import cityModule from '@/components/ver1.0.0/city-module.vue'
@@ -133,9 +134,10 @@ export default {
     },
     getData () {
       let params = {
-        id: 20
+        scode: 'FIdOW4ztZvA5j5AQYA0OMDKWoORw7ii6',
+        page_token: 'FIdOW4ztZvA5j5AQYA0OMDKWoORw7ii6tu8j9c61jq78847we'
       }
-      getDetail(params).then(res => {
+      wapGetDetail(params).then(res => {
         this.datttt = '2'
         console.log('详情数据请求成功', res)
         this.detailData = res.data
@@ -144,6 +146,18 @@ export default {
         this.initData = this.detailData.attributes
         this.setFormValue(this.initData)
       })
+      // let params = {
+      //   id: 20
+      // }
+      // getDetail(params).then(res => {
+      //   this.datttt = '2'
+      //   console.log('详情数据请求成功', res)
+      //   this.detailData = res.data
+      //   this.product_id = res.data.id
+      //   this.channel_product_id = res.data.channel_product_id
+      //   this.initData = this.detailData.attributes
+      //   this.setFormValue(this.initData)
+      // })
     },
     setFormValue (data) { // 设置formvalue， 产品参数，保费计算，属性监听都是
       this.formValue = {
@@ -161,7 +175,10 @@ export default {
         payment_period_value: data.payment_period.default.value,
         payment_period: data.payment_period.default.value,
         product_id: this.product_id,
-        social_security: data.social_security.default
+        social_security: data.social_security.default,
+        insured_profession_name: data.insured_profession.default.name,
+        insured_profession_code: data.insured_profession.default.code,
+        insured_profession_id: data.insured_profession.default.id
       }
       this.calculate()
     },
@@ -174,9 +191,9 @@ export default {
         console.log('计算保费失败', res)
       })
     },
-    changeAttr () { // 监听属性
+    changeAttr () { // 监听属性getAttr
       let params = this.formValue
-      getAttr(params).then(res => {
+      wapGetAttr(params).then(res => {
         this.initData = res.data
         this.setFormValue(this.initData)
       }).catch(res => {
@@ -196,6 +213,12 @@ export default {
       this.formValue.insured_personal_address_area = data[2].code
       this.formValue.insured_personal_address_city = data[1].code
       this.formValue.insured_personal_address_province = data[0].code
+      this.changeAttr()
+    },
+    getProfression (arr, str, key) {
+      this.formValue[key] = str
+      this.formValue.insured_profession_code = arr[2].code,
+      this.formValue.insured_profession_id = arr[2].id
       this.changeAttr()
     },
     shareFunc () {

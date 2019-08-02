@@ -51,3 +51,13 @@ export function fetchAgent (params, toast) {
 export function getProfression (params, toast) {
   return httpFunc(`/api/v1/product/profession/list${auth}`, params, 'get', toast)
 }
+
+// --------------------- wap端接口 -----------------------------
+// 详情 api/v1/insurance/product/distribution/detail
+export function wapGetDetail (params, toast) {
+  return httpFunc(`http://h5.beta.12354.com/api/v1/insurance/product/distribution/detail${auth}`, params, 'get', toast)
+}
+// 监听属性 /api/v1/insurance/product/attributes
+export function wapGetAttr (params, toast) {
+  return httpFunc(`http://h5.beta.12354.com/api/v1/insurance/product/attributes${auth}`, params, 'post', toast)
+}

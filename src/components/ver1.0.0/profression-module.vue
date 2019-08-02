@@ -2,8 +2,8 @@
   <div class="profression-module">
     <div class="product-info-form-item">
       <div class="product-info-form-item-title">{{title}}</div>
-      <div class="product-info-form-item-content" v-if="!type">
-        <div class="form-item-content" @click="show = true">{{profressionStr || '请选择'}}</div>
+      <div class="product-info-form-item-content" v-if="type === 'detail'">
+        <div class="form-item-content" @click="showPopup">{{profressionStr || '请选择'}}</div>
       </div>
     </div>
 
@@ -27,10 +27,10 @@
         </div>
         <div class="checked-show-box">
           <p>已选择：</p>
-          <p>{{profressionStr}}</p>
+          <p>{{tempStr}}</p>
         </div>
         <div class="profression-list-style" v-if="totalList.length > 0">
-          <div class="list-item-style" v-for="(item, idx) in totalList[leval - 1]" :key="idx" @click="getData(item)">
+          <div class="list-item-style" v-for="(item, idx) in totalList[count - 1]" :key="idx" @click="getData(item)">
             <p>{{item.name}}</p>
             <p><span class="icon iconfont">&#xe60f;</span></p>
           </div>
@@ -41,35 +41,60 @@
 </template>
 
 <script>
-import { Popup, Picker } from 'vant';
-import { getProfression } from '@/api/index.js'
+// 根据type来判定用于哪个页面，仅支持detail or insure两个页面
+// 本组件应该支持查看与导出数据，传的参为islook，默认为false即组件默认为导出数据，导出的数据为所选的职业数组（按照leavel）和拼接的职业字符串与传进来的keyStr
+// 根据外部传的职业级数count来判定要多少级的数据（默认为3级）
+// 根据传入的api方法参数：apiFunc来判定调用哪个接口
+// 根据参数defaultName设置默认字符串
+// 点击请选择的时候才会请求
+
+//---组件流程
+// 1、只在顺时针流程请求接口，逆向操作不请求接口， 读取本地缓存进行渲染，减轻服务器压力，加快页面渲染。以大数组totalList来leavel级的数组
+// 2、请求回来的数组根据等级push进totalList，因无法检测数组更新， 故采用vue.set方式更新数组
+// 3、按返回按钮时候
+import { Popup, Picker } from 'vant'
+import *as Api from '@/api/profression.js'
 export default {
   name: 'template-name',
   props: {
     title: {
       type: String
     },
-    list: {
-      type: Array
+    isLook: {
+      type: Boolean,
+      default: false,
     },
-    active: {
-      type: [ String, Number ]
+    id: {
+      type: Number,
+      default: 149
     },
-    keyStr: {
+    keyStr: { // 原封不动传出去用作外组件的赋值
       type: String
     },
-    type: {
-      type: String // select  or  chheck
+    type: { // 本组件用于哪个页面，detail or insure ，默认为detail
+      type: String, // detail or insure
+      default: 'detail'
+    },
+    leavel: {
+      type: Number,
+      default: 3
+    },
+    apiFunc: { // 要请求的方法，即对应'@/api/profression.js'导出的方法
+      type: String,
+      default: 'appProfression'
+    },
+    defaultName: {
+      type: String,
+      default: '大老板-二老板-小老板',
     }
   },
   data () {
     return {
       show: false,
-      columns: [],
-      activeObj: {},
-      profressionStr: '',
+      profressionStr: '', // 正式显示的职业字符串
+      tempStr: '', // popup内拼接显示的职业字符串
       checked: [], // 已经选中的职业数组
-      leval: 0, // 当leval为3的时候停止发请求， 即最多请求3次，totalList里最多有三个数组
+      count: 0, // 当count为3的时候停止发请求， 即最多请求3次，totalList里最多有三个数组
       totalList: [] // 总的，装三个级别的职业数组
     }
   },
@@ -77,56 +102,74 @@ export default {
     [Popup.name]: Popup
   },
   methods: {
+    showPopup () {
+      this.show = true
+      this.init()
+      this.count = 0
+      this.getData()
+    },
     closePopup () {
       this.show = false
     },
     backStep () {
-      if (this.leval === 1) return
-      this.leval -= 1
+      if (this.count === 1) return
+      this.count -= 1
     },
     getData (item) {
       let params = {
-        product_id: 149
+        product_id: this.id
       }
-      if (item) {
+      if (item) { // 点击选择的时候
         params.parent_id = item.id
       }
-      this.leval += 1
-      this.$set(this.totalList, this.leval - 1, []) // 删除对应数据， 避免视图重现上次的数据
-      getProfression(params).then(res => {
+      let that = this
+      Api[this.apiFunc](params).then(res => {
         console.log('职业请求成功', res)
-        // this.totalList[this.leval - 1] = res.data // 此方式添加数据视图不会更新
-        this.$set(this.totalList, this.leval - 1, res.data) // 此方式避免了添加数据视图不会更新
-        if (item) {
-          this.$set(this.checked, this.leval - 2, item)
-          this.setProfressionStr()
-        }
-        if (this.leval === 4) {
-          this.closePopup()
-          return
-        }
+        // if (res.data.length > 0) {
+          that.$set(that.totalList, that.count, res.data)
+          that.count = that.count + 1
+          if (item) {
+            that.$set(that.checked, that.count - 2, item)
+            that.setProfressionStr(that.checked)
+            if ((that.count - 1 === that.leavel) && that.isLook) { // 看当前选项是第几级，并判断当前组件是读取还是导出，islook
+              // 仅查看
+              return
+            }
+            if ((that.count - 1 === that.leavel) && !that.isLook) { // 看当前选项是第几级，并判断当前组件是读取还是导出，islook
+              // 关闭popup并导出数据
+              that.$emit('getData', that.checked, that.profressionStr, that.keyStr)
+              that.closePopup()
+            }
+          }
+        // }
       }).catch(res => {
         console.log('职业请求失败', res)
       })
     },
-    setProfressionStr () {
-      if (this.checked.length === 0) return
-      let arr = []
-      this.checked.map(item => {
-        arr.push(item.name)
+    setProfressionStr (arr) {
+      if (arr.length === 0) return
+      let newArr = []
+      arr.map(item => {
+        newArr.push(item.name)
       })
-      this.profressionStr = arr.join('-')
+      this.tempStr = newArr.join('-') // 每次点击职业时候调用拼接
+      if (this.count - 1 === this.leavel) { // 当点击的等级等于组件外传进来的leavel相等时，才将临时tempstr赋值给profressionStr，避免选择一半不选后数据异常
+        this.profressionStr = this.tempStr
+      }
+    },
+    init () {
+      this.profressionStr = this.defaultName
+      this.tempStr = this.defaultName
     }
   },
   created () {
-    this.getData()
+    this.init()
   },
   computed: {
 
   },
   beforeRouteEnter (to, from, next) {
     next(vm => {
-
     })
   }
 }
