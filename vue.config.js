@@ -5,7 +5,7 @@ let outputDir = 'dist'
 let projectname = process.argv[3] // 获取build后面的参数确定执行哪个文件
 let productName = require('./utils/productName.js').productName
 console.log('aaa1,', productName)
-if (process.env.NODE_ENV == 'development') {
+if (process.env.NODE_ENV !== 'product') { // 'development'
   page[productName] = pagesConf[productName]
 } else {
   page[projectname] = pagesConf[projectname]

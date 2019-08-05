@@ -133,23 +133,11 @@ export default {
       return this.detailData
     },
     getData () {
-      let params = {
-        scode: 'FIdOW4ztZvA5j5AQYA0OMDKWoORw7ii6',
-        page_token: 'FIdOW4ztZvA5j5AQYA0OMDKWoORw7ii6tu8j9c61jq78847we'
-      }
-      wapGetDetail(params).then(res => {
-        this.datttt = '2'
-        console.log('详情数据请求成功', res)
-        this.detailData = res.data
-        this.product_id = res.data.id
-        this.channel_product_id = res.data.channel_product_id
-        this.initData = this.detailData.attributes
-        this.setFormValue(this.initData)
-      })
       // let params = {
-      //   id: 20
+      //   scode: 'FIdOW4ztZvA5j5AQYA0OMDKWoORw7ii6',
+      //   page_token: 'FIdOW4ztZvA5j5AQYA0OMDKWoORw7ii6tu8j9c61jq78847we'
       // }
-      // getDetail(params).then(res => {
+      // wapGetDetail(params).then(res => {
       //   this.datttt = '2'
       //   console.log('详情数据请求成功', res)
       //   this.detailData = res.data
@@ -158,6 +146,18 @@ export default {
       //   this.initData = this.detailData.attributes
       //   this.setFormValue(this.initData)
       // })
+      let params = {
+        id: 20
+      }
+      getDetail(params).then(res => {
+        this.datttt = '2'
+        console.log('详情数据请求成功', res)
+        this.detailData = res.data
+        this.product_id = res.data.id
+        this.channel_product_id = res.data.channel_product_id
+        this.initData = this.detailData.attributes
+        this.setFormValue(this.initData)
+      })
     },
     setFormValue (data) { // 设置formvalue， 产品参数，保费计算，属性监听都是
       this.formValue = {
@@ -193,7 +193,7 @@ export default {
     },
     changeAttr () { // 监听属性getAttr
       let params = this.formValue
-      wapGetAttr(params).then(res => {
+      getAttr(params).then(res => {
         this.initData = res.data
         this.setFormValue(this.initData)
       }).catch(res => {

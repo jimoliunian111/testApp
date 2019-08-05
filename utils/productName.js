@@ -1,3 +1,3 @@
 module.exports = {
-  productName: 'huagui_damai'
-}
+    productName: 'huagui_damai'
+  }

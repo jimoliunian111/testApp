@@ -7,12 +7,7 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "add": "node utils/cliAdd",
-    "build:all": "npm run build:huagui_damai",
-    "build:huagui_damai": "vue-cli-service build huagui_damai --mode product",
-    "build:huagui_xiaomai": "vue-cli-service build huagui_xiaomai --mode product",
-    "build:qixin_xinai": "vue-cli-service build qixin_xinai --mode product",
     "delete": "node utils/cliDelete",
-    "dev": "vue-cli-service serve --mode development",
     "esFix": "eslint --fix src",
     "go": "node utils/cliRun",
     "initPackage": "node utils/initPackage"

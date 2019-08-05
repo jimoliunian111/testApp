@@ -1,3 +1,9 @@
+// 本文件代码内容用于添加产品
+// 实现流程：一、判断公司产品是否存在->：
+// 1、仅存在公司，在公司目录下创建相关产品；存在公司和产品，返回提示
+// 2、不存在公司则也无存在产品  创建公司目录以及产品目录
+// 二、创建相关模块： 入口main.js 路由router.js 初始页面（以输入产品名命名） 创建运行的配置 pagesConf.js里的信息
+// 若要开启调试模式， 请在package.json模式相对应命令里添加语句：  --inspect-brk
 const readline = require('readline');
 const fs = require('fs');
 const pagesConf = require('./pagesConf.js')

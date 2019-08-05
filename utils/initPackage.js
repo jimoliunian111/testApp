@@ -1,3 +1,4 @@
+// 若要开启调试模式， 请在package.json模式相对应命令里添加语句：  --inspect-brk
 const fs = require('fs');
 var path = require('path')
 require('shelljs/global');
