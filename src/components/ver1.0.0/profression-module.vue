@@ -62,7 +62,7 @@ export default {
     },
     isLook: {
       type: Boolean,
-      default: true,
+      default: false,
     },
     id: {
       type: Number,

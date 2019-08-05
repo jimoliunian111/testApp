@@ -51,6 +51,10 @@ export function fetchAgent (params, toast) {
 export function getProfression (params, toast) {
   return httpFunc(`/api/v1/product/profession/list${auth}`, params, 'get', toast)
 }
+// app投保页初始化 /api/v1/product/distribution/insure/attributes${auth}
+export function getAttributes (params, toast) {
+  return httpFunc(`/api/v1/product/distribution/insure/attributes${auth}`, params, 'post', toast)
+}
 
 // --------------------- wap端接口 -----------------------------
 // 详情 api/v1/insurance/product/distribution/detail

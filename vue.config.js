@@ -7,6 +7,7 @@ let productName = require('./utils/productName.js').productName
 console.log('aaa1,', productName)
 if (process.env.NODE_ENV !== 'product') { // 'development'
   page[productName] = pagesConf[productName]
+  outputDir = 'dist/' + projectname.split('_')[0] + '/' + projectname.split('_')[1]
 } else {
   page[projectname] = pagesConf[projectname]
   outputDir = 'dist/' + projectname.split('_')[0] + '/' + projectname.split('_')[1]

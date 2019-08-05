@@ -66,7 +66,7 @@
 
     <product-introduction :confs="tabsList" :detail="detailData"></product-introduction>
 
-    <footer-tool-module :money="money" @share="shareFunc"></footer-tool-module>
+    <footer-tool-module :money="money" @share="shareFunc" @write="writeInfo"></footer-tool-module>
 
     <share></share>
   </div>
@@ -229,6 +229,29 @@ export default {
         data: JSON.stringify(this.formValue)
       }
       this.$root.$emit('share', params)
+    },
+    storeData () {
+      let obj = {
+        channel_product_id: this.channel_product_id,
+        share_cover: this.detailData.share_cover,
+        share_description: this.detailData.share_description,
+        share_title: this.detailData.title
+      }
+      this.$store.dispatch('setdetailConf', {...this.formValue, ...obj})
+      window.sessionStorage.setItem('setdetailConf', JSON.stringify({...this.formValue, ...obj}))
+    },
+    writeInfo () {
+      if (!this.formValue.insured_personal_address_province) {
+        this.$toast('请选择投保区域')
+        return
+      }
+      if (!this.formValue.insured_profession_code) {
+        this.$toast('请选择职业')
+        return
+      }
+      this.storeData()
+      return
+      this.$router.push({name: 'damai_insure'})
     }
   }
 }

@@ -10,7 +10,10 @@
     "delete": "node utils/cliDelete",
     "esFix": "eslint --fix src",
     "go": "node utils/cliRun",
-    "initPackage": "node utils/initPackage"
+    "initPackage": "node utils/initPackage",
+    "build:all": "npm run build:huagui_damai & npm run build:qixin_xinai",
+    "build:huagui_damai": "vue-cli-service build huagui_damai --mode product",
+    "build:qixin_xinai": "vue-cli-service build qixin_xinai --mode product"
   },
   "dependencies": {
     "amfe-flexible": "^2.2.1",
