@@ -1,9 +1,21 @@
 <template>
   <div class="profression-module">
-    <div class="product-info-form-item">
+    <div class="product-info-form-item" v-if="type === 'detail'">
       <div class="product-info-form-item-title">{{title}}</div>
       <div class="product-info-form-item-content" v-if="type === 'detail'">
         <div class="form-item-content" @click="showPopup">{{profressionStr || '请选择'}}</div>
+      </div>
+    </div>
+
+    <div class="insure-item-style" v-if="type === 'insure'">
+      <div class="left-style">{{title}}</div>
+      <div class="right-style">
+        <div class="profression-box-style">
+          <div class="profression-value-style" @click="showPopup">{{profressionStr || '请选择'}}</div>
+          <div class="profression-icon-style">
+            <span class="icon iconfont">&#xe60f;</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -58,7 +70,8 @@ export default {
   name: 'template-name',
   props: {
     title: {
-      type: String
+      type: String,
+      required: true
     },
     isLook: {
       type: Boolean,
@@ -85,7 +98,12 @@ export default {
     },
     defaultName: {
       type: String,
+      required: true,
       default: '大老板-二老板-小老板',
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     }
   },
   data () {

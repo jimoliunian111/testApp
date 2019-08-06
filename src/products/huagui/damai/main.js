@@ -4,6 +4,7 @@ import router from './router'
 import store from './store/index'
 import axios from '@/plugins/axios.js'
 import '@/common.js'
+import '@/assets/styles/common.scss'
 Vue.config.productionTip = false
 console.log('store', store)
 new Vue({

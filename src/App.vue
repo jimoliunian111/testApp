@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style lang="scss">
-  @import '@/assets/styles/common.scss';
+
   #app {
     width: 100%;
     min-height: 100vh;
@@ -26,6 +26,5 @@ export default {
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    background: $color-page-background;
   }
 </style>

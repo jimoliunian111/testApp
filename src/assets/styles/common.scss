@@ -134,3 +134,135 @@
 .module-margin-top {
   margin-top: rem(20);
 }
+
+// -----------投保页相关样式-------------------
+.insure-item-style {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
+  width: 100%;
+  padding: rem(28) rem(0);
+  box-sizing: border-box;
+  border-top: 1px solid $color-border;
+  text-align: left;
+  font-size: rem(30);
+  .left-style {
+    width: rem(200);
+  }
+  .right-style {
+    flex: 1;
+    .van-cell {
+      padding: 0;
+      line-height: 0;
+    }
+    .insure-checked-box {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      .insure-check-item {
+        height: rem(54);
+        padding: rem(0) rem(16);
+        box-sizing: border-box;
+        line-height: rem(48);
+        color: $color-word;
+        font-size: rem(28);
+        border: 1px solid $color-border;
+        border-radius: rem(10);
+        margin-right: rem(20);
+      }
+    }
+    .datetime-box-style {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      .datetime-value-style {
+        width: rem(360);
+      }
+      .datetiem-icon-stykle {
+        width: rem(60);
+      }
+    }
+    .city-box-style {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      .city-value-style {
+        width: rem(360);
+      }
+      .city-icon-stykle {
+        width: rem(60);
+      }
+    }
+    .profression-box-style {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      .profression-value-style {
+        width: rem(360);
+      }
+      .profression-icon-stykle {
+        width: rem(60);
+      }
+    }
+    .select-box-style {
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-content: center;
+      align-items: center;
+      width: 100%;
+      .select-value-style {
+        width: rem(360);
+      }
+      .select-icon-stykle {
+        width: rem(60);
+      }
+    }
+  }
+  .insure-active-style {
+    border: 1px solid $color-primary !important;
+    color: $color-primary !important;
+  }
+}
+// .error input::-webkit-input-placeholder {    
+//   color: red !important;
+// }
+// .error input {
+//   color: red !important;
+// }
+// .error span {
+//   color: red !important;
+// }
+// .error >>> .vux-cell-value {
+//   color: red !important;
+// }
+// .error::before {
+//   position: absolute;
+//   left: -.4rem;
+//   content: "";
+//   width: .373333rem;
+//   height: .373333rem;
+//   background: url(../../../../assets/image/sinosig/wddg/error-icon.png) no-repeat;
+//   background-size: contain;
+//   margin-right: .12rem;
+// }
+// .error .placeholder {
+//   color: red !important;
+// }
+// .error select {
+//   color: red !important;
+// }
