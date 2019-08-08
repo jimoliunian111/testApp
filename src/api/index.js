@@ -55,6 +55,10 @@ export function getProfression (params, toast) {
 export function getAttributes (params, toast) {
   return httpFunc(`/api/v1/product/distribution/insure/attributes${auth}`, params, 'post', toast)
 }
+// app投保区域 /api/v1/product/district/list${auth}
+export function getAreaList (params, toast) {
+  return httpFunc(`/api/v1/product/district/list${auth}`, params, 'get', toast)
+}
 
 // --------------------- wap端接口 -----------------------------
 // 详情 api/v1/insurance/product/distribution/detail

@@ -24,9 +24,13 @@
       <profression-module title="职业类型" :defaultName="formValue.insured_profession_name"
       keyStr="insured_profession_name" @getData="getProfression"></profression-module>
     </template>
-    <template v-if="initData.guarantee_period">
+    <!-- <template v-if="initData.guarantee_period">
       <city-module title="投保区域" @getData="getCityData"></city-module>
+    </template> -->
+    <template v-if="initData.guarantee_period">
+      <area-module title="投保区域" @getData="getCityData"></area-module>
     </template>
+
     <template v-if="initData.social_security">
       <select-module title="有无社保" :list="initData.social_security.items" :active="initData.social_security.default"
       keyStr="social_security" @getData="getSelectData" type="check"></select-module>
@@ -81,6 +85,7 @@ import cityModule from '@/components/ver1.0.0/city-module.vue'
 import datetimeModule from '@/components/ver1.0.0/datetime-module.vue'
 import footerToolModule from '@/components/ver1.0.0/footer-tool-module.vue'
 import profressionModule from '@/components/ver1.0.0/profression-module.vue'
+import areaModule from '@/components/ver1.0.0/area-module.vue'
 
 export default {
   name: 'huagui_damai',
@@ -120,7 +125,8 @@ export default {
     cityModule,
     datetimeModule,
     footerToolModule,
-    profressionModule
+    profressionModule,
+    areaModule
   },
   created () {
     localStorage.setItem('userToken', 'b22a2adf48587076e96941a4ecfde64f')
@@ -164,9 +170,9 @@ export default {
         annual_income: data.annual_income.default,
         applicant_birthday: data.applicant_birthday.default,
         applicant_gender: data.applicant_gender.default,
-        insured_personal_address_area: data.insured_personal_address_area.default.id,
-        insured_personal_address_city: data.insured_personal_address_city.default.id,
-        insured_personal_address_province: data.insured_personal_address_province.default.id,
+        insured_personal_address_area: data.insured_personal_address_area.default,
+        insured_personal_address_city: data.insured_personal_address_city.default,
+        insured_personal_address_province: data.insured_personal_address_province.default,
         insured_birthday: data.insured_birthday.default,
         insured_gender: data.insured_gender.default,
         guarantee_quota: data.guarantee_quota.default,
