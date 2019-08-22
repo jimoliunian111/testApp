@@ -121,7 +121,7 @@ function setBuildConf (keyword, mypath = './utils/pagesConf.js') {
     chunks: ["chunk-vendors", "chunk-common", keyword]
   }
   let data =
-  `module.exports = ${JSON.stringify(pagesConf)}`
+  `module.exports = ${JSON.stringify(pagesConf, null, 2)}`
 
   fs.writeFileSync(mypath, data)
   console.log('打包配置创建成功...')

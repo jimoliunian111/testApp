@@ -46,7 +46,7 @@ function deleteProductConf (keyword, type = 'product', mypath = './utils/pagesCo
   let data = ''
   if (type === 'product') {
     delete pagesConf[keyword]
-    data = `module.exports = ${JSON.stringify(pagesConf)}`
+    data = `module.exports = ${JSON.stringify(pagesConf, null, 2)}`
   } else {
     let obj = {}
     let arr = Object.keys(pagesConf)
@@ -54,7 +54,7 @@ function deleteProductConf (keyword, type = 'product', mypath = './utils/pagesCo
     result.map(key => {
       obj[key] = pagesConf[key]
     })
-    data = `module.exports = ${JSON.stringify(obj)}`
+    data = `module.exports = ${JSON.stringify(obj, null, 2)}`
   }
   fs.writeFileSync('./utils/pagesConf.js', data)
 }

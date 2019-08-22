@@ -55,7 +55,7 @@ function setNpmCmd (runtime) {
   json.scripts = { ...json.scripts,
     ...obj
   }
-  fs.writeFileSync('./package.json', JSON.stringify(json));
+  fs.writeFileSync('./package.json', JSON.stringify(json, null, 2));
 }
 
 rl.question('请输入要运行的产品， 如huagui_damai  ', (product) => {

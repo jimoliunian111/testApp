@@ -58,7 +58,7 @@ function writeFile(arr, data, fileStr) {
     data.scripts = { ...data.scripts,
       ...obj
     }
-    fs.writeFileSync(fileStr, JSON.stringify(data));
+    fs.writeFileSync(fileStr, JSON.stringify(data, null, 2));
     console.log('package.json文件设置成功')
     rl.question('请输入打包产品名，如huagui_damai  ', (answer) => {
       console.log(`正在打包中...：${answer}`);

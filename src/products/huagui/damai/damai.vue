@@ -52,6 +52,13 @@
       <div class="product-info-form-item-title">年收入</div>
       <div class="product-info-form-item-content"><div>10万</div></div>
     </div>
+    <!-- <div class="product-info-form-item">
+      <div class="product-info-form-item-title">上传身份证</div>
+      <div class="product-info-form-item-content">
+        <input type="file" @change="getFile($event)" accept="image/*"/>
+        只添加  accept="image/*"  足以兼容 ios和安卓
+      </div>
+    </div> -->
 
     <div class="module-margin-top">
       <div class="common-title">
@@ -258,6 +265,10 @@ export default {
       this.storeData()
       return
       this.$router.push({name: 'damai_insure'})
+    },
+
+    getFile (event) {
+      console.log('11111111111111111', event.target.files)
     }
   }
 }
