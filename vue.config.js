@@ -2,16 +2,20 @@ const pagesConf = require('./utils/pagesConf.js')
 
 let page = {}
 let outputDir = 'dist'
-let projectname = process.argv[3] // 获取build后面的参数确定执行哪个文件
-let productName = require('./utils/productName.js').productName
-console.log('aaa1,', productName)
-if (process.env.NODE_ENV !== 'product') { // 'development'
-  page[productName] = pagesConf[productName]
-  outputDir = 'dist/' + projectname.split('_')[0] + '/' + projectname.split('_')[1]
-} else {
-  page[projectname] = pagesConf[projectname]
-  outputDir = 'dist/' + projectname.split('_')[0] + '/' + projectname.split('_')[1]
+let projectname = process.argv[3] // 获取build后面的参数确定执行哪个文件, build的时候才用到
+let productRunConf = require('./utils/productRunConf.js')
+
+if (process.argv[2] === 'serve') { // 运行
+  let name = productRunConf.productName
+  let terminal = productRunConf.terminal
+  page[name] = (pagesConf[name])[terminal]
+  outputDir = 'dist/' + name.split('_')[0] + '/' + name.split('_')[1] + '/' + terminal
+} else if (process.argv[2] === 'build') { // 打包
+  let runTime = process.argv[4]
+  page[projectname] = (pagesConf[projectname])[runTime]
+  outputDir = 'dist/' + projectname.split('_')[0] + '/' + projectname.split('_')[1] + '/' + runTime
 }
+
 module.exports = {
   publicPath: './',
   outputDir: outputDir,

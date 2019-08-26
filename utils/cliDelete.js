@@ -7,6 +7,7 @@ const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
+let terminal = 'app'
 
 // 若要开启调试模式， 请在package.json模式相对应命令里添加语句：  --inspect-brk
 
@@ -29,7 +30,7 @@ function deleteall(path, type, keyword) {
     files.forEach(function(file, index) {
       let curPath = path + "/" + file;
       if (fs.statSync(curPath).isDirectory()) { // recurse
-        deleteall(curPath);
+        deleteall(curPath, type, keyword);
       } else { // delete file
         fs.unlinkSync(curPath);
       }
@@ -37,7 +38,6 @@ function deleteall(path, type, keyword) {
     fs.rmdirSync(path);
     deleteProductConf(keyword, type)
     console.log(`删除成功`);
-    rl.close(keyword, type)
   }
 };
 // 删除产品页面配置
@@ -45,7 +45,14 @@ function deleteProductConf (keyword, type = 'product', mypath = './utils/pagesCo
   // 删除单个产品配置
   let data = ''
   if (type === 'product') {
-    delete pagesConf[keyword]
+    if (terminal === 'all') {
+      delete pagesConf[keyword]
+    } else {
+      delete pagesConf[keyword][terminal]
+      if (Object.keys(pagesConf[keyword]).length === 0) {
+        delete pagesConf[keyword]
+      }
+    }
     data = `module.exports = ${JSON.stringify(pagesConf, null, 2)}`
   } else {
     let obj = {}
@@ -57,6 +64,7 @@ function deleteProductConf (keyword, type = 'product', mypath = './utils/pagesCo
     data = `module.exports = ${JSON.stringify(obj, null, 2)}`
   }
   fs.writeFileSync('./utils/pagesConf.js', data)
+  rl.close()
 }
 
 
@@ -67,8 +75,15 @@ rl.question('请输入要删除的公司或产品  ', (answer) => {
     if (hadProduct(answer)) { // 查找到产品
       rl.question('删除公司or产品，公司：1， 产品：2 , 取消：3 ', (type) => {
         if (+type === 2) {
-          console.log(`正在删除产品：${answer.split('_')[1]} 中...`);
-          deleteall(`./src/products/${answer.split('_')[0]}/${answer.split('_')[1]}`, 'product', answer)
+          rl.question('删除那个终端的产品（app 或者 wap 或者 all, 默认app)', (terminalType) => {
+            terminal = (terminalType !== 'app' && terminalType !== 'wap' && terminalType !== 'all') ? 'app' : terminalType
+            console.log(`正在删除产品：${answer.split('_')[1][terminal]} 中...`);
+            if (terminal === 'all') {
+              deleteall(`./src/products/${answer.split('_')[0]}/${answer.split('_')[1]}`, 'product', answer)
+            } else {
+              deleteall(`./src/products/${answer.split('_')[0]}/${answer.split('_')[1]}/${terminal}`, 'product', answer)
+            }
+          })
         } else if (+type === 1) {
           rl.question('删除公司会删除该公司目录下所有产品，是否删除： yes or no ', (choice) => {
             if (choice === 'yes') {

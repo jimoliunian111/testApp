@@ -50,21 +50,41 @@ function readFile(confs, fileStr = './package.json') {
 
 function writeFile(arr, data, fileStr) {
   rl.question('请输入环境，如development  ', (answer) => {
-    let obj = {}
-    obj['build:all'] = arr.map(item => 'npm run build:' + item).join(' & ')
-    arr.map(item => {
-      obj['build:' + item] = 'vue-cli-service build ' + item + ' --mode ' + answer
+    rl.question('请输入终端，app or wap  ', (type) => {
+      let obj = {}
+      let scripts = {
+        "serve": "vue-cli-service serve --mode development",
+        "build": "vue-cli-service build",
+        "lint": "vue-cli-service lint",
+        "add": "node utils/cliAdd",
+        "delete": "node utils/cliDelete",
+        "esFix": "eslint --fix src",
+        "go": "node utils/cliRun",
+        "setConf": "node utils/initPackage"
+      }
+      obj['build:all'] = arr.map(item => 'npm run build:' + item).join(' & ')
+      arr.map(item => {
+        obj['build:' + item] = 'vue-cli-service build ' + item + ' ' + type + ' --mode ' + answer
+      })
+      data.scripts = { ...scripts,
+        ...obj
+      }
+      fs.writeFileSync(fileStr, JSON.stringify(data, null, 2));
+      console.log('package.json文件设置成功')
+      rl.question('请输入打包产品名，如huagui_damai  ', (answer) => {
+        console.log(`正在打包中...：${answer}`);
+        if (answer === 'all') {
+          exec("npm run build:all");
+          rl.close();
+        }
+        if (answer === '') {
+          rl.close();
+        } else {
+          exec("npm run build:" + answer);
+          rl.close();
+        }
+      });
     })
-    data.scripts = { ...data.scripts,
-      ...obj
-    }
-    fs.writeFileSync(fileStr, JSON.stringify(data, null, 2));
-    console.log('package.json文件设置成功')
-    rl.question('请输入打包产品名，如huagui_damai  ', (answer) => {
-      console.log(`正在打包中...：${answer}`);
-      exec("npm run build:" + answer);
-      rl.close();
-    });
   });
 }
 getAllDirs()

@@ -1,1 +1,24 @@
-module.exports = {"huagui_damai":{"entry":"src/products/huagui/damai/main.js","template":"src/public/index.html","filename":"index.html","chunks":["chunk-vendors","chunk-common","huagui_damai"]}}
+module.exports = {
+  "huagui_damai": {
+    "app": {
+      "entry": "src/products/huagui/damai/app/main.js",
+      "template": "src/public/index.html",
+      "filename": "index.html",
+      "chunks": [
+        "chunk-vendors",
+        "chunk-common",
+        "huagui_damai"
+      ]
+    },
+    "wap": {
+      "entry": "src/products/huagui/damai/wap/main.js",
+      "template": "src/public/index.html",
+      "filename": "index.html",
+      "chunks": [
+        "chunk-vendors",
+        "chunk-common",
+        "huagui_damai"
+      ]
+    }
+  }
+}

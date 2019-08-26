@@ -12,8 +12,12 @@ const rl = readline.createInterface({
   output: process.stdout
 });
 
+let runtimeStr = 'dev'
+let terminal = 'app'
+let productName = ''
 
-function readFile(fileStr = './utils/productName.js') {
+
+function readFile(fileStr = './utils/productRunConf.js') {
   var data = fs.readFileSync(fileStr);
   return JSON.parse(data.toString())
 }
@@ -27,20 +31,38 @@ function hadProduct (keyword, mypath = './src/products') {
   const items = fs.readdirSync(mypath + '/' + keyword.split('_')[0]);
   return items.some((item) => item === keyword.split('_')[1])
 }
+// 判断终端下有没有产品
+function isPass (keyword, mypath = './src/products') {
+  const items = fs.readdirSync(mypath + '/' + keyword.split('_')[0] + '/' + keyword.split('_')[1]);
+  return items.some((item) => item === terminal)
+}
 // 环境输入检测
 function checkRuntime (runtime) {
   if (runtime !== 'beta' && runtime !== 'dev' && runtime !== 'prod') {
     console.log('输入的环境有误， 系统默认以dev环境运行')
     runtime = 'dev'
   }
+  runtimeStr = runtime
   return runtime
 }
-// 设置运行产品变量名
-function setProductName (product) {
+// 终端检测
+function checkTerminal (type) {
+  if (type !== 'app' && type !== 'wap') {
+    console.log('输入的终端类型有误, 默认以app端运行')
+    type = 'app'
+  }
+  terminal = type
+  return type
+}
+
+// 设置运行产品配置，包含（产品名、终端、环境）
+function setProductRunConf (product) {
   let data = `module.exports = {
-    productName: '${product}'
+    productName: '${product}',
+    terminal: '${terminal}',
+    runtime: '${runtimeStr}'
   }`
-  fs.writeFileSync('./utils/productName.js', data);
+  fs.writeFileSync('./utils/productRunConf.js', data);
 }
 // 设置运行npm命令
 function setNpmCmd (runtime) {
@@ -64,11 +86,14 @@ rl.question('请输入要运行的产品， 如huagui_damai  ', (product) => {
     rl.close()
     return
   }
+  productName = product
   rl.question('请输入要运行的环境: dev or prod or beta  ', (runtime) => {
     runtime = checkRuntime(runtime)
-    setProductName(product)
-    setNpmCmd(runtime)
-    exec("npm run auto");
-    rl.close()
+    rl.question('请输入要运行的终端: app or wap  ', (type) => {
+      checkTerminal(type)
+      setProductRunConf(product)
+      setNpmCmd(runtime)
+      exec("npm run auto");
+    })
   });
 });
